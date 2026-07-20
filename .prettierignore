@@ -1,0 +1,4 @@
+dist
+.output
+src/routeTree.gen.ts
+public/images/originals

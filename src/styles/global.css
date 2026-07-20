@@ -1,0 +1,302 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@theme {
+  --color-parchment: #f4efe5;
+  --color-ivory: #fbf8f2;
+  --color-charcoal: #24231f;
+  --color-amber: #b96f2b;
+  --color-terracotta: #985342;
+  --color-olive: #68705f;
+  --color-brown: #3a2d26;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --animate-accordion-down: accordion-down 220ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-ivory);
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    overflow-x: clip;
+    background: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    opacity: 0.025;
+    background-image:
+      repeating-radial-gradient(
+        circle at 13% 17%,
+        #24231f 0 0.45px,
+        transparent 0.7px 4px
+      ),
+      repeating-radial-gradient(
+        circle at 71% 63%,
+        #985342 0 0.35px,
+        transparent 0.6px 5px
+      );
+    background-size:
+      7px 7px,
+      9px 9px;
+    mix-blend-mode: multiply;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-amber) 36%, transparent);
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  [role='button'] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+  min-height: 2.75rem;
+  transform: translateY(-200%);
+  border: 2px solid var(--color-amber);
+  border-radius: 2px;
+  background: var(--color-ivory);
+  padding: 0.7rem 1rem;
+  color: var(--color-charcoal);
+  font-weight: 700;
+  transition: transform 150ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: none;
+}
+
+.spotlight-wash {
+  background: radial-gradient(
+    ellipse at 40% 35%,
+    rgba(251, 248, 242, 0.92) 0%,
+    rgba(244, 239, 229, 0.58) 37%,
+    rgba(185, 111, 43, 0.08) 64%,
+    transparent 77%
+  );
+  filter: blur(1px);
+}
+
+.line-motif,
+.line-motif-dark {
+  --motif-color: #985342;
+  --motif-node: #b96f2b;
+}
+
+.line-motif-dark {
+  --motif-color: #f4efe5;
+  --motif-node: #b96f2b;
+  opacity: 0.75;
+}
+
+.motif-node {
+  position: absolute;
+  width: clamp(2.8rem, 7vw, 6.5rem);
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--motif-color) 70%, transparent);
+  border-radius: 50%;
+}
+
+.motif-node::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--motif-node);
+  content: '';
+}
+
+.motif-node-a {
+  top: 12%;
+  left: 12%;
+}
+.motif-node-b {
+  top: 24%;
+  right: 16%;
+}
+.motif-node-c {
+  bottom: 17%;
+  left: 30%;
+}
+.motif-node-d {
+  right: 29%;
+  bottom: 10%;
+}
+
+.motif-segment {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: color-mix(in srgb, var(--motif-color) 62%, transparent);
+}
+
+.motif-segment-a {
+  top: 22%;
+  left: 18%;
+  width: 62%;
+  transform: rotate(7deg);
+}
+.motif-segment-b {
+  top: 33%;
+  left: 31%;
+  width: 51%;
+  transform: rotate(65deg);
+}
+.motif-segment-c {
+  bottom: 30%;
+  left: 18%;
+  width: 61%;
+  transform: rotate(-18deg);
+}
+
+.beams .beam {
+  position: absolute;
+  top: -25%;
+  width: 1px;
+  height: 155%;
+  transform: rotate(31deg);
+  background: linear-gradient(
+    to bottom,
+    transparent 2%,
+    rgba(244, 239, 229, 0.05) 24%,
+    rgba(185, 111, 43, 0.65) 58%,
+    transparent 88%
+  );
+  box-shadow: 0 0 20px rgba(185, 111, 43, 0.12);
+}
+
+.beam-one {
+  left: 14%;
+}
+.beam-two {
+  left: 37%;
+  opacity: 0.72;
+}
+.beam-three {
+  left: 61%;
+  opacity: 0.52;
+}
+.beam-four {
+  left: 84%;
+  opacity: 0.38;
+}
+
+@media (max-width: 767px) {
+  body::before {
+    opacity: 0.018;
+  }
+  .spotlight-wash {
+    width: 118%;
+  }
+  .line-motif {
+    opacity: 0.08;
+  }
+  .beams .beam {
+    transform: rotate(18deg);
+    opacity: 0.28;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .spotlight-wash,
+  .line-motif,
+  .beams {
+    display: none;
+  }
+}
