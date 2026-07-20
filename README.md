@@ -27,7 +27,7 @@ pnpm build
 pnpm preview
 ```
 
-TanStack Router generates `src/routeTree.gen.ts` during development and production builds. The production server output is created by TanStack Start/Vite in `.output`.
+TanStack Router generates `src/routeTree.gen.ts` during development and production builds. The production client and server output is created by TanStack Start/Vite in `dist`.
 
 ## Environment variables
 
@@ -57,9 +57,31 @@ Before launch:
 
 The included rate limit is deliberately lightweight. For horizontally scaled or high-volume hosting, replace the in-memory map with a shared edge/KV or Redis-backed limiter.
 
-## Deployment notes
+## Netlify deployment
 
-The project uses TanStack Start’s default Vite production output and can be deployed to a supported Node-compatible host. Configure the three contact variables in the host, use `pnpm build` as the build command, and serve the generated TanStack Start output according to the selected provider’s current adapter guidance.
+The project includes Netlify’s official TanStack Start Vite adapter and a root `netlify.toml`. This preserves SSR, file-based routes and TanStack Start server functions—including the contact form. Netlify generates the required serverless function automatically; do not configure a custom Functions directory.
+
+When importing the Git repository in Netlify, use:
+
+| Setting             | Value            |
+| ------------------- | ---------------- |
+| Branch to deploy    | `main`           |
+| Base directory      | Leave blank      |
+| Build command       | `pnpm run build` |
+| Publish directory   | `dist/client`    |
+| Functions directory | Leave blank      |
+
+The same build settings are committed in `netlify.toml`, so Netlify should detect them automatically. Node.js 22 is also pinned there.
+
+Add these production environment variables in **Site configuration → Environment variables**:
+
+| Variable             | Value                                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `RESEND_API_KEY`     | The Resend secret API key                                                                                                |
+| `CONTACT_EMAIL_TO`   | `mgcharu@gmail.com`                                                                                                      |
+| `CONTACT_EMAIL_FROM` | A sender on the verified Resend domain, for example `Connected Mind Psychology <website@connectedmindpsychology.com.au>` |
+
+Do not place the Resend secret in the repository. The first deploy can complete without it, but the contact form will intentionally report that email is not configured until all three values are present.
 
 Before changing DNS from the existing Squarespace site:
 
